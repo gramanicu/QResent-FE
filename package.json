@@ -10,16 +10,17 @@
 	},
 	"devDependencies": {
 		"@sveltejs/kit": "next",
+		"@sveltejs/adapter-vercel": "next",
 		"autoprefixer": "^10.3.7",
 		"cssnano": "^5.0.8",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.2.1",
-		"node-sass": "^6.0.1",
 		"postcss": "^8.3.9",
 		"postcss-load-config": "^3.1.0",
 		"prettier": "^2.4.1",
 		"prettier-plugin-svelte": "^2.4.0",
+		"sass": "^1.43.4",
 		"svelte": "^3.42.6",
 		"svelte-preprocess": "^4.9.8",
 		"tailwindcss": "^2.2.16"
