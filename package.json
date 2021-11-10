@@ -25,5 +25,9 @@
 		"svelte-preprocess": "^4.9.8",
 		"tailwindcss": "^2.2.16"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@tailwindcss/typography": "^0.4.1",
+		"daisyui": "^1.16.2"
+	}
 }
