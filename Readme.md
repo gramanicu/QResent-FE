@@ -6,8 +6,10 @@ The frontend server for the QResent webpage.
 
 - [QResent Frontend](#qresent-frontend)
   - [Table of contents](#table-of-contents)
-  - [WIP](#wip)
+  - [Notes](#notes)
 
-## WIP
+## Notes
+
+- navbar and footer are not components, will be defined directly in the layout
 
 © 2021 Grama Nicolae, Ionita Radu, Mosessohn Vlad, Draghici Rares, Luca Vlad
