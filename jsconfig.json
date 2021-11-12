@@ -4,6 +4,7 @@
 		"paths": {
 			"$components/*": ["src/components/*"],
 			"$scss/*": ["src/scss/*"],
+			"$stores/*": ["src/stores/*"]
 		}
 	},
 	"include": ["src/**/*.js", "src/**/*.svelte"]

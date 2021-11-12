@@ -2,13 +2,13 @@ const config = {
 	mode: 'jit',
 	purge: {
 		content: ['src/app.html', './src/**/*.{html,js,svelte,ts,scss}'],
-		enabled: true
+		enabled: true,
 	},
 	theme: {
-		extend: {}
+		extend: {},
 	},
 
-	plugins: [require('@tailwindcss/typography'), require('daisyui')]
+	plugins: [require('@tailwindcss/typography'), require('daisyui')],
 };
 
 module.exports = config;

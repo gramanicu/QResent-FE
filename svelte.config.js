@@ -13,17 +13,18 @@ const config = {
 			resolve: {
 				alias: {
 					$components: path.resolve('./src/components'),
-					$scss: path.resolve('./src/scss')
-				}
-			}
-		}
+					$stores: path.resolve('./src/stores'),
+					$scss: path.resolve('./src/scss'),
+				},
+			},
+		},
 	},
 
 	preprocess: [
 		preprocess({
-			postcss: true
-		})
-	]
+			postcss: true,
+		}),
+	],
 };
 
 export default config;

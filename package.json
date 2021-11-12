@@ -11,10 +11,11 @@
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
-		"@sveltejs/kit": "next",
 		"@sveltejs/adapter-vercel": "next",
+		"@sveltejs/kit": "next",
 		"autoprefixer": "^10.3.7",
 		"cssnano": "^5.0.8",
+		"easyqrcodejs": "^4.4.6",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.2.1",
