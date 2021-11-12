@@ -12,17 +12,19 @@ const config = {
 		vite: {
 			resolve: {
 				alias: {
-					$components: path.resolve('./src/components')
-				}
-			}
-		}
+					$components: path.resolve('./src/components'),
+					$stores: path.resolve('./src/stores'),
+					$scss: path.resolve('./src/scss'),
+				},
+			},
+		},
 	},
 
 	preprocess: [
 		preprocess({
-			postcss: true
-		})
-	]
+			postcss: true,
+		}),
+	],
 };
 
 export default config;

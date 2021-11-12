@@ -3,7 +3,9 @@
 		"baseUrl": ".",
 		"paths": {
 			"$components/*": ["src/components/*"],
+			"$scss/*": ["src/scss/*"],
+			"$stores/*": ["src/stores/*"]
 		}
 	},
-	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.svelte"]
+	"include": ["src/**/*.js", "src/**/*.svelte"]
 }
