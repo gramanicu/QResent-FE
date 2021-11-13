@@ -1,4 +1,6 @@
 <script>
+	import VisibilitySvg from '$components/svg/VisibilitySvg.svelte';
+
 	export let label;
 	export let placeholder;
 	let visible = false;
@@ -12,18 +14,20 @@
 	<label class="label">
 		<span class="label-text">{label}</span>
 	</label>
-	<div class="relative">
+	<div class="relative flex">
 		<input
 			id="password"
 			type={visible ? 'text' : 'password'}
 			{placeholder}
-			class="input input-primary input-bordered password" />
-		<button type="button" class="btn btn-primary text-neutral-content" on:click={toggleViewPass}>Hide</button>
+			class="input input-primary input-bordered w-full pr-16 " />
+
+		<button
+			class="absolute top-0 right-0 rounded-l-none btn btn-primary text-neutral-content"
+			on:click={toggleViewPass}>
+			<VisibilitySvg />
+		</button>
 	</div>
 </div>
 
 <style>
-	.password {
-		width: 15.62rem;
-	}
 </style>
