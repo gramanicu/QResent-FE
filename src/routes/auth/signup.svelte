@@ -2,35 +2,30 @@
 	import FormInputText from '$components/forms/FormInputText.svelte';
 	import FormInputEmail from '$components/forms/FormInputEmail.svelte';
 	import FormInputPassword from '$components/forms/FormInputPassword.svelte';
+	import FormLink from '$components/forms/FormLink.svelte';
 </script>
 
-<div class="w-full h-full bg-color">
-	<div class="flex flex-col justify-center items-center w-full h-full">
-		<div class="login-reg-container rounded-lg w-96 p-8 border-2">
-			<FormInputText placeholder="Username" label="Username" />
-			<FormInputEmail placeholder="Email" label="Email" />
-			<FormInputPassword placeholder="Password" label="Password" />
-			<FormInputPassword placeholder="Confirm password" label="Confirm password" />
-			<button class="btn btn-primary btn-block mt-6 text-neutral-content">Register</button>
-			<div class="mt-5 text-center">
-				<a href="/auth/signin">Registered? Login.</a>
-			</div>
+<div class="flex flex-col justify-center items-center w-full h-full screen-container">
+	<div
+		class="login-reg-container rounded-lg max-w-md w-full p-8 pt-6 border-2 shadow-2xl bg-base-100 border-base-300">
+		<h1 class="font-medium text-xl text-center mb-2">Sign Up</h1>
+		<FormInputText name="username" placeholder="Username" label="Username" />
+		<FormInputEmail name="email" placeholder="Email" label="Email" />
+		<FormInputPassword name="password" placeholder="Password" label="Password" />
+		<FormInputPassword name="confirmPassword" placeholder="Confirm password" label="Confirm password" />
+		<button class="btn btn-primary btn-block mt-12 text-neutral-content">Register</button>
+		<div class="mt-5 text-center">
+			<p>
+				Registered already?
+				<FormLink url="/auth/signin" text="Log In" />
+			</p>
 		</div>
 	</div>
 </div>
 
-<style>
-	.login-reg-container {
-		border: 1px solid #adadad;
-		box-shadow: 5px 5px 15px -1px #3535359f;
-	}
-
-	.checkbox-remember {
-		margin-left: 10px;
-	}
-
-	.rememberme-div p,
-	.rememberme-div input {
-		vertical-align: middle;
+<style lang="scss">
+	div.screen-container {
+		background: #ffffff;
+		background: linear-gradient(135deg, hsla(var(--n)) -10%, hsla(var(--p)) 70%, hsla(var(--pf)) 105%);
 	}
 </style>
