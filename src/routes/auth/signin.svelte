@@ -21,6 +21,9 @@
 						class="checkbox-remember checkbox checkbox-primary checkbox-sm" />
 				</p>
 			</div>
+			<div class="mt-5 text-center">
+				<a href="/auth/signup">Not registered? Register now.</a>
+			</div>
 		</div>
 	</div>
 </div>
