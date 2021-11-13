@@ -5,6 +5,9 @@
 	import TextLogo from '$components/branding/TextLogo.svelte';
 	import DownSvg from '$components/svg/DownSvg.svelte';
 
+	let username = 'John Doe';
+
+	// TODO - compute items based on account type
 	const navItems = [
 		{ label: 'Home', href: '#' },
 		{ label: 'Item 1', href: '#' },
@@ -33,21 +36,21 @@
 			</div>
 
 			<div class="navbar-end lg:justify-self-end lg:w-full hidden lg:flex flex-row gap-1">
-				<!-- <a class="btn btn-ghost btn-sm rounded-btn" href="/auth/signin"> Sign In </a>
-				<a class="btn btn-primary btn-sm rounded-btn text-neutral-content" href="/auth/signup"> Sign Up </a> -->
-
 				<!-- Logged In Username -->
-				<p>John Doe</p>
+				<p>{username}</p>
 				<!-- User dropdown menu -->
 				<div class="dropdown dropdown-end">
 					<div tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
 						<DownSvg />
 					</div>
 
-					<!-- TODO - show depending on the auth state -->
+					<!-- Logout button -->
 					<div
 						tabindex="0"
 						class="shadow-lg border border-gray-300 card compact dropdown-content bg-base-100 rounded-box p-2 gap-1 menu">
+						<a
+							class="p-2 bg-base-100 hover:bg-base-300 rounded-lg whitespace-nowrap"
+							href="/account/settings"><p>Settings</p></a>
 						<a class="p-2 bg-base-100 hover:bg-base-300 rounded-lg whitespace-nowrap" href="/auth/signout"
 							><p>Sign Out</p></a>
 					</div>
@@ -88,13 +91,7 @@
 
 			<!-- Auth Links -->
 			<div class="flex lg:hidden flex-col w-full p-2 border-t rounded justify-self-end">
-				<!-- <div class="flex flex-row w-full items-center justify-center">
-					<a class="btn btn-ghost btn-sm rounded-btn" href="/auth/signin"> Sign In </a>
-					<div class="divider divider-vertical">or</div>
-					<a class="btn btn-primary btn-sm rounded-btn text-neutral-content" href="/auth/signup"> Sign Up </a>
-				</div> -->
-
-				<!-- TODO - show depending on the auth state -->
+				<!-- Logout button -->
 				<div class="flex flex-row justify-center items-center">
 					<a class="btn btn-ghost btn-sm rounded-btn" href="/auth/signout">Sign Out</a>
 				</div>
