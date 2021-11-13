@@ -1,11 +1,11 @@
 <script>
-  export let label;
-  export let placeholder;
+	export let label;
+	export let placeholder;
 </script>
 
 <div class="form-control">
-  <label class="label">
-    <span class="label-text">{label}</span>
-  </label> 
-  <input type="text" placeholder={placeholder} class="input">
+	<label class="label">
+		<span class="label-text">{label}</span>
+	</label>
+	<input type="text" {placeholder} class="input input-primary input-bordered" />
 </div>
