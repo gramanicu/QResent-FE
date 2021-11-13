@@ -2,7 +2,7 @@
 	import '$scss/app.scss';
 	import CloseSvg from '$components/svg/CloseSvg.svelte';
 	import HamburgerSvg from '$components/svg/Hamburger.svelte';
-	import TextLogo from '$components/branding/textLogo.svelte';
+	import TextLogo from '$components/branding/TextLogo.svelte';
 
 	const navItems = [
 		{ label: 'Home', href: '#' },
