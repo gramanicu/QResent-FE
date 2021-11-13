@@ -1,11 +1,12 @@
 <script>
 	export let label;
 	export let placeholder;
+	export let name;
 </script>
 
 <div class="form-control">
-	<label class="label">
+	<label for={name} class="label">
 		<span class="label-text">{label}</span>
 	</label>
-	<input type="text" {placeholder} class="input input-primary input-bordered" />
+	<input type="text" {name} {placeholder} class="input input-primary input-bordered" />
 </div>

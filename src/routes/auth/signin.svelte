@@ -2,44 +2,37 @@
 	import FormInputText from '$components/forms/FormInputText.svelte';
 	import FormInputEmail from '$components/forms/FormInputEmail.svelte';
 	import FormInputPassword from '$components/forms/FormInputPassword.svelte';
+	import FormCheckbox from '$components/forms/FormCheckbox.svelte';
+	import FormLink from '$components/forms/FormLink.svelte';
 </script>
 
-<div class="w-full h-full bg-color">
-	<div class="flex flex-col justify-center items-center w-full h-full">
-		<div class="login-reg-container rounded-lg w-96 p-8 border-2">
-			<!-- <FormInputText placeholder="Username" label="Username" /> -->
-			<FormInputEmail placeholder="Email" label="Email" />
-			<FormInputPassword placeholder="Password" label="Password" />
-			<div class="w-full text-right mt-4">
-				<a href="#">Forgot password?</a>
+<div class="flex flex-col justify-center items-center w-full h-full screen-container">
+	<div class="login-reg-container rounded-lg w-96 p-8 pt-6 border-2 shadow-2xl bg-base-100 border-base-300">
+		<h1 class="font-medium text-xl text-center mb-2">Sign In</h1>
+		<!-- <FormInputText placeholder="Username" label="Username" /> -->
+		<FormInputEmail name="email" placeholder="Email" label="Email" />
+		<FormInputPassword name="password" placeholder="Password" label="Password" />
+		<div class="flex flex-row w-full mt-4">
+			<div class="flex flex-row text-center items-center w-1/2">
+				<FormCheckbox text="Remember me?" name="remember" />
 			</div>
-			<button class="btn btn-primary btn-block mt-6 text-neutral-content">Login</button>
-			<div class="inline-block text-center mt-5 rememberme-div">
-				<p>
-					Remember me?<input
-						type="checkbox"
-						class="checkbox-remember checkbox checkbox-primary checkbox-sm" />
-				</p>
+			<div class="text-right flex flex-row items-center justify-end w-1/2">
+				<FormLink url="#" text="Forgot password?" />
 			</div>
-			<div class="mt-5 text-center">
-				<a href="/auth/signup">Not registered? Register now.</a>
-			</div>
+		</div>
+		<button class="btn btn-primary btn-block mt-6 text-neutral-content">Login</button>
+		<div class="mt-5 text-center">
+			<p>
+				Not registered?
+				<FormLink url="/auth/signup" text="Register now" />
+			</p>
 		</div>
 	</div>
 </div>
 
-<style>
-	.login-reg-container {
-		border: 1px solid #adadad;
-		box-shadow: 5px 5px 15px -1px #3535359f;
-	}
-
-	.checkbox-remember {
-		margin-left: 10px;
-	}
-
-	.rememberme-div p,
-	.rememberme-div input {
-		vertical-align: middle;
+<style lang="scss">
+	div.screen-container {
+		background: #ffffff;
+		background: linear-gradient(135deg, hsla(var(--n)) -10%, hsla(var(--p)) 70%, hsla(var(--pf)) 105%);
 	}
 </style>
