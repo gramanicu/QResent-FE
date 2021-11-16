@@ -1,9 +1,9 @@
 <script>
-	import '$scss/app.scss';
+    import '$scss/app.scss';
 </script>
 
 <div class="w-screen h-screen overflow-hidden">
-	<slot />
+    <slot />
 </div>
 
 <style lang="scss">
