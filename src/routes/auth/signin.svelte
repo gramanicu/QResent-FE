@@ -4,6 +4,9 @@
     import FormInputPassword from '$components/forms/FormInputPassword.svelte';
     import FormCheckbox from '$components/forms/FormCheckbox.svelte';
     import FormLink from '$components/forms/FormLink.svelte';
+    import { vars } from '$lib/variables';
+
+    console.log(vars.baseApiUrl);
 </script>
 
 <div class="flex flex-col justify-center items-center w-full h-full screen-container">
