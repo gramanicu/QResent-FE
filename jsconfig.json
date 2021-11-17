@@ -1,11 +1,12 @@
 {
-	"compilerOptions": {
-		"baseUrl": ".",
-		"paths": {
-			"$components/*": ["src/components/*"],
-			"$scss/*": ["src/scss/*"],
-			"$stores/*": ["src/stores/*"]
-		}
-	},
-	"include": ["src/**/*.js", "src/**/*.svelte"]
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "$components/*": ["src/components/*"],
+            "$scss/*": ["src/scss/*"],
+            "$stores/*": ["src/stores/*"],
+            "$lib/*": ["src/lib/*"]
+        }
+    },
+    "include": ["src/**/*.js", "src/**/*.svelte"]
 }
