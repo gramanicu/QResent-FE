@@ -19,6 +19,7 @@
 <div class="flex flex-col justify-center items-center w-full h-full screen-container">
     <div class="login-reg-container rounded-lg w-96 p-8 pt-6 border-2 shadow-2xl bg-base-100 border-base-300">
         <h1 class="font-medium text-xl text-center mb-2">Sign In</h1>
+
         <!-- <FormInputText placeholder="Username" label="Username" /> -->
         <FormInputEmail name="email" placeholder="Email" label="Email" />
         <FormInputPassword name="password" placeholder="Password" label="Password" />
