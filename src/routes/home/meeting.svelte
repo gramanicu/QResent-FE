@@ -1,3 +1,9 @@
+<script>
+    import { user } from '$stores/user';
+
+    $user.role = 1;
+</script>
+
 <svelte:head>
     <html lang="en-GB" />
     <title>Meeting page</title>
