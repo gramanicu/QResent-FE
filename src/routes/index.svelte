@@ -12,8 +12,8 @@
     <div class="text-center hero-content text-neutral-content">
         <div class="max-w-md">
             <h1 class="mb-5 text-5xl font-bold">QResent</h1>
-            <p class="mb-5">Nick issue #radusmecher tb completat descriere xoxo</p>
-            <div class="flex flex-row items-center justify-center">
+            <p class="mb-5">QResent is a tool used to check online classes attendance</p>
+            <div class="flex flex-row items-center justify-center gap-4">
                 <a href="/auth/signin" class="btn btn-primary btn-config text-neutral-content">Login</a>
                 <a href="/auth/signup" class="btn btn-primary btn-config text-neutral-content">Signup</a>
             </div>
@@ -22,12 +22,8 @@
 </div>
 
 <style>
-    .btn-config {
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-
     .bg-color {
+        background-position: initial;
         background: #ffffff;
         background: linear-gradient(135deg, hsla(var(--n)) -10%, hsla(var(--p)) 70%, hsla(var(--pf)) 105%);
     }

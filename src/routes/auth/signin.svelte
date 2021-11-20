@@ -4,16 +4,26 @@
     import FormInputPassword from '$components/forms/FormInputPassword.svelte';
     import FormCheckbox from '$components/forms/FormCheckbox.svelte';
     import FormLink from '$components/forms/FormLink.svelte';
-    import { vars } from '$lib/variables';
+    import { callBackend } from '$lib/backend';
+    import { onMount } from 'svelte';
 
-    console.log(vars.baseApiUrl);
+    onMount(async () => {
+        try {
+            const data = await callBackend(`/subject/add-subject`, 'POST', {
+                id: 1,
+                name: 'Subj',
+            });
+            console.log(data);
+        } catch (err) {}
+    });
 </script>
 
 <div class="flex flex-col justify-center items-center w-full h-full screen-container">
     <div class="login-reg-container rounded-lg w-96 p-8 pt-6 border-2 shadow-2xl bg-base-100 border-base-300">
         <h1 class="font-medium text-xl text-center mb-2">Sign In</h1>
+
         <!-- <FormInputText placeholder="Username" label="Username" /> -->
-        <FormInputEmail name="email" placeholder="Email" label="Email" />
+        <FormInputEmail name="email" placeholder="Educational Institution Email" label="Email" />
         <FormInputPassword name="password" placeholder="Password" label="Password" />
         <div class="flex flex-row w-full mt-4">
             <div class="flex flex-row text-center items-center w-1/2">

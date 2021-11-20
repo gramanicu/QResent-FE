@@ -1,5 +1,7 @@
 <script>
-    import QrCode from '$components/QRCode.svelte';
+    import { user } from '$stores/user';
+
+    $user.role = 3;
 </script>
 
 <svelte:head>
@@ -9,9 +11,8 @@
     <meta name="robots" content="noindex" />
 </svelte:head>
 
-<div class="w-64 h-64">
-    <QrCode text="https://daisyui.com/" size="128" />
+<div class="p-4 rounded-lg bg-gray-300 m-4 border border-gray-600 flex flex-col gap-4">
+    <div class="btn btn-block"><a href="/home/users">Admin homepage</a></div>
+    <div class="btn btn-block"><a href="/home/classes">Professor homepage</a></div>
+    <div class="btn btn-block"><a href="/home/validate">Student homepage</a></div>
 </div>
-
-<style>
-</style>

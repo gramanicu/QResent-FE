@@ -4,27 +4,28 @@
     import HamburgerSvg from '$components/svg/Hamburger.svelte';
     import TextLogo from '$components/branding/TextLogo.svelte';
     import DownSvg from '$components/svg/DownSvg.svelte';
+    import { user } from '$stores/user';
 
     let username = 'John Doe';
+    $user.role = 1;
 
     // TODO - compute items based on account type
+
     const navItems = [
-        { label: 'Home', href: '#' },
-        { label: 'Item 1', href: '#' },
-        { label: 'Item 2', href: '#' },
-        { label: 'Item 3', href: '#' },
-        { label: 'Item 4', href: '#' },
-        { label: 'Item 5', href: '#' },
-        { label: 'Item 6', href: '#' },
+        { label: 'Users', href: '/home/users', role: 0 },
+        { label: 'Classes', href: '/home/classes', role: 1 },
+        { label: 'Meeting', href: '/home/meeting', role: 1 },
+        { label: 'Statistics', href: '/home/statistics', role: 1 },
+        { label: 'Home', href: '#', role: 2 },
     ];
 </script>
 
-<div class="drawer drawer-mobile min-h-screen">
+<div class="drawer drawer-mobile h-screen">
     <!-- Drawer toggler (hidden) -->
     <input id="layoutDrawer" type="checkbox" class="drawer-toggle" />
 
     <!-- Drawer content -->
-    <main class="flex-grow block overflow-x-hidden bg-base-100 text-base-content drawer-content">
+    <main class="flex-grow flex flex-col h-screen overflow-hidden bg-base-100 text-base-content drawer-content">
         <!-- The navbar -->
         <div class="sticky inset-x-0 top-0 z-50 navbar bg-base-100  border-b border-base-300">
             <div class="lg:hidden navbar-start">
@@ -59,7 +60,9 @@
         </div>
 
         <!-- The page contents -->
-        <slot />
+        <div class=" flex-grow">
+            <slot />
+        </div>
     </main>
 
     <!-- The mobile sidebar -->
@@ -82,9 +85,15 @@
             <div class="flex-grow">
                 <ul class="menu flex flex-col pt-2 w-80 bg-base-100 text-lg p-4">
                     {#each navItems as link}
-                        <li>
-                            <a href={link.href}>{link.label}</a>
-                        </li>
+                        {#if link.role == $user.role}
+                            <li>
+                                <a
+                                    href={link.href}
+                                    on:click={() => {
+                                        document.getElementById('layoutDrawer').click();
+                                    }}>{link.label}</a>
+                            </li>
+                        {/if}
                     {/each}
                 </ul>
             </div>
