@@ -2,7 +2,7 @@
     export let placeholder;
     export let name;
     export let value;
-    export let disabled;
+    export let disabled = null;
 </script>
 
 <div class="form-control">

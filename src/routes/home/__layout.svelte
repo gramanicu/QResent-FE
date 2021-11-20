@@ -87,7 +87,11 @@
                     {#each navItems as link}
                         {#if link.role == $user.role}
                             <li>
-                                <a href={link.href}>{link.label}</a>
+                                <a
+                                    href={link.href}
+                                    on:click={() => {
+                                        document.getElementById('layoutDrawer').click();
+                                    }}>{link.label}</a>
                             </li>
                         {/if}
                     {/each}
