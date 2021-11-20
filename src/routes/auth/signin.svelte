@@ -4,9 +4,16 @@
     import FormInputPassword from '$components/forms/FormInputPassword.svelte';
     import FormCheckbox from '$components/forms/FormCheckbox.svelte';
     import FormLink from '$components/forms/FormLink.svelte';
-    import { vars } from '$lib/variables';
+    import { getDataFromBE } from '$lib/backend';
+    import { onMount } from 'svelte';
 
-    console.log(vars.baseApiUrl);
+    onMount(async () => {
+        const data = await getDataFromBE(`/subject/add-subject`, 'POST', {
+            id: 1,
+            name: 'Subj',
+        });
+        console.log(data);
+    });
 </script>
 
 <div class="flex flex-col justify-center items-center w-full h-full screen-container">
