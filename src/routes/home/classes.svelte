@@ -1,4 +1,7 @@
 <script>
+    import { user } from '$stores/user';
+
+    $user.role = 1;
     let classes = [
         { description: 'test', name: 'mate', requirements: 'nimic', type: 'laborator' },
         { description: 'test', name: 'fizica', requirements: 'nimic', type: 'seminar' },

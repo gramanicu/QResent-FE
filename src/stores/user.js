@@ -2,7 +2,9 @@
 // It will automatically refresh the jwt token after login, and exposes different functions
 import { writable } from 'svelte/store';
 
-export const user = writable(null);
+export const user = writable({
+    role: 0,
+});
 
 // Writable/Readable ?
 // Sync to local storage

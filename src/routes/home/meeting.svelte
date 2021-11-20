@@ -1,6 +1,8 @@
 <script>
+    import { user } from '$stores/user';
     import QrCode from '$components/QRCode.svelte';
-    import { start_hydrating } from 'svelte/internal';
+
+    $user.role = 1;
 
     var timeLeft;
     var timerId;
