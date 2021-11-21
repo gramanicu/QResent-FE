@@ -4,6 +4,7 @@
     export let label;
     export let placeholder;
     export let name;
+    export let id = 'password';
 
     let visible = false;
 
@@ -18,7 +19,7 @@
     </label>
     <div class="relative flex">
         <input
-            id="password"
+            {id}
             type={visible ? 'text' : 'password'}
             {name}
             {placeholder}
