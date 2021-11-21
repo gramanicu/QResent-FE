@@ -3,7 +3,7 @@
     import CloseSvg from '$components/svg/CloseSvg.svelte';
     import TableInputEmail from '$components/table/TableInputEmail.svelte';
     import TableInputText from '$components/table/TableInputText.svelte';
-    import { role } from '$lib/backend';
+    import { roleToString } from '$lib/backend';
     import { auth } from '$stores/user';
 
     $auth.user.role = 0;
@@ -108,7 +108,9 @@
                         placeholder="Last Name" />
                 </td>
                 <td class="dropdown">
-                    <div tabindex="0" class="badge-lg badge cursor-pointer capitalize">{role(newUser.role)}</div>
+                    <div tabindex="0" class="badge-lg badge cursor-pointer capitalize">
+                        {roleToString(newUser.role)}
+                    </div>
                     <div
                         tabindex="0"
                         class="shadow-lg border mt-1 border-gray-300 card compact dropdown-content bg-base-100 rounded-box p-2 gap-1 menu">
@@ -118,7 +120,7 @@
                                 on:click={() => {
                                     newUser.role = role_id;
                                 }}>
-                                {role(role_id)}
+                                {roleToString(role_id)}
                             </div>
                         {/each}
                     </div>
@@ -145,7 +147,7 @@
 
                     <td class="dropdown">
                         <div tabindex="0" class="badge-lg badge cursor-pointer capitalize">
-                            {role(user.role)}
+                            {roleToString(user.role)}
                         </div>
                         <div
                             tabindex="0"
@@ -154,7 +156,7 @@
                                 <div
                                     class="p-2 bg-base-100 cursor-pointer capitalize hover:bg-base-300 rounded-lg whitespace-nowrap"
                                     on:click={() => changeUserRole(user.id, role_id)}>
-                                    {role(role_id)}
+                                    {roleToString(role_id)}
                                 </div>
                             {/each}
                         </div>
