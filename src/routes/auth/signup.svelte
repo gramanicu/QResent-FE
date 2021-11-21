@@ -15,8 +15,12 @@
             <FormInputText class="flex-1" name="last_name" placeholder="Last Name" label="Last Name" />
         </div>
         <FormInputEmail name="email" placeholder="Educational Institution Email" label="Email" />
-        <FormInputPassword name="password" placeholder="Password" label="Password" />
-        <FormInputPassword name="confirmPassword" placeholder="Confirm password" label="Confirm password" />
+        <FormInputPassword id="password" name="password" placeholder="Password" label="Password" />
+        <FormInputPassword
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm password"
+            label="Confirm password" />
         <button class="btn btn-primary btn-block mt-12 text-neutral-content">Register</button>
         <div class="mt-5 text-center">
             <p>
