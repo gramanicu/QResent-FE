@@ -1,7 +1,7 @@
 <script>
-    import { user } from '$stores/user';
+    import { auth } from '$stores/user';
 
-    $user.role = 3;
+    $auth.user.role = 3;
 </script>
 
 <svelte:head>

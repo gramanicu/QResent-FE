@@ -3,25 +3,99 @@
     import FormInputEmail from '$components/forms/FormInputEmail.svelte';
     import FormInputPassword from '$components/forms/FormInputPassword.svelte';
     import FormLink from '$components/forms/FormLink.svelte';
+    import FormButton from '$components/forms/FormButton.svelte';
+    import { callBackend, roleToEnum } from '$lib/backend';
+
+    let confirmPassword = null;
+    let user = {
+        username: null,
+        firstName: null,
+        lastName: null,
+        email: null,
+        password: null,
+        enabled: true,
+        role: 2,
+    };
+
+    function validateEmail(email) {
+        const re =
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    function educationalEmail() {
+        if (!(validateEmail(user.email) && user.email.endsWith('.upb.ro'))) {
+            return false;
+        }
+        return true;
+    }
+
+    function isValid() {
+        if (!educationalEmail()) {
+            return false;
+        }
+
+        if (!(user.username && user.firstName && user.lastName && user.password)) {
+            return false;
+        }
+        if (!(user.password === confirmPassword)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    async function signup() {
+        if (typeof user.role == 'number') {
+            user.role = roleToEnum(user.role);
+        }
+
+        if (isValid()) {
+            try {
+                const res = await callBackend('/auth/register', 'POST', user);
+                console.log(res);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    }
 </script>
 
 <div class="flex flex-col justify-center items-center w-full h-full screen-container">
     <div
         class="login-reg-container rounded-lg max-w-md w-full p-8 pt-6 border-2 shadow-2xl bg-base-100 border-base-300">
         <h1 class="font-medium text-xl text-center mb-2">Sign Up</h1>
-        <FormInputText name="username" placeholder="Username" label="Username" />
+        <FormInputText bind:value={user.username} name="username" placeholder="Username" label="Username" />
         <div class="grid grid-cols-1 md:grid-cols-2  w-full gap-0 md:gap-4">
-            <FormInputText class="flex-1" name="first_name" placeholder="First Name" label="First Name" />
-            <FormInputText class="flex-1" name="last_name" placeholder="Last Name" label="Last Name" />
+            <FormInputText bind:value={user.firstName} name="first_name" placeholder="First Name" label="First Name" />
+            <FormInputText bind:value={user.lastName} name="last_name" placeholder="Last Name" label="Last Name" />
         </div>
-        <FormInputEmail name="email" placeholder="Educational Institution Email" label="Email" />
-        <FormInputPassword id="password" name="password" placeholder="Password" label="Password" />
+        <FormInputEmail
+            error={!user.email || educationalEmail() ? null : 'Not a valid educational institution email.'}
+            bind:value={user.email}
+            name="email"
+            placeholder="Educational Institution Email"
+            label="Email" />
+        <span class="mb-4 block" />
         <FormInputPassword
+            bind:value={user.password}
+            error={!user.password || !confirmPassword || user.password === confirmPassword
+                ? null
+                : 'Passwords do not match.'}
+            id="password"
+            name="password"
+            placeholder="Password"
+            label="Password" />
+        <FormInputPassword
+            bind:value={confirmPassword}
+            error={!user.password || !confirmPassword || user.password === confirmPassword
+                ? null
+                : 'Passwords do not match.'}
             id="confirmPassword"
             name="confirmPassword"
             placeholder="Confirm password"
             label="Confirm password" />
-        <button class="btn btn-primary btn-block mt-12 text-neutral-content">Register</button>
+        <FormButton on:click={signup} class="mt-8" text="Register" />
         <div class="mt-5 text-center">
             <p>
                 Registered already?

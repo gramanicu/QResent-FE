@@ -1,8 +1,8 @@
 <script>
-    import { user } from '$stores/user';
+    import { auth } from '$stores/user';
     import QrCode from '$components/QRCode.svelte';
 
-    $user.role = 1;
+    $auth.user.role = 1;
 
     var timeLeft;
     var timerId;

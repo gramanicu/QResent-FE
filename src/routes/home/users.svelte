@@ -4,9 +4,9 @@
     import TableInputEmail from '$components/table/TableInputEmail.svelte';
     import TableInputText from '$components/table/TableInputText.svelte';
     import { role } from '$lib/backend';
-    import { user } from '$stores/user';
+    import { auth } from '$stores/user';
 
-    $user.role = 0;
+    $auth.user.role = 0;
 
     let users = [
         {

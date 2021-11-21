@@ -1,4 +1,5 @@
 import { vars } from '$lib/variables';
+import { auth } from '$stores/user';
 
 /**
  * Calls the backend routes
@@ -9,13 +10,22 @@ import { vars } from '$lib/variables';
  * @returns The JSON response from the backend
  */
 export async function callBackend(route, method, body, headers) {
-    body = JSON.stringify(body);
+    if (body) {
+        body = JSON.stringify(body);
 
-    headers = {
-        ...headers,
-        'Content-Length': body.length,
-        'Content-Type': 'application/json',
-    };
+        headers = {
+            ...headers,
+            'Content-Length': body.length,
+            'Content-Type': 'application/json',
+        };
+    }
+
+    if (auth.jwt != null) {
+        headers = {
+            ...headers,
+            Authorization: `Bearer ${auth.jwt}`,
+        };
+    }
 
     const url = vars.baseApiUrl + route;
     const res = await fetch(url, {
@@ -25,7 +35,14 @@ export async function callBackend(route, method, body, headers) {
     });
 
     if (!res.ok) throw new Error(await res.text());
-    return res.json();
+
+    const contentType = res.headers.get('content-type');
+
+    if (contentType && contentType.indexOf('application/json') !== -1) {
+        return res.json();
+    } else {
+        return res.text();
+    }
 }
 
 /**
@@ -33,7 +50,7 @@ export async function callBackend(route, method, body, headers) {
  * @param {Number} role_id The id of the role
  * @returns A string with the name of the role
  */
-export function role(role_id) {
+export function roleToString(role_id) {
     switch (Number(role_id)) {
         case 0:
             return 'admin';
@@ -41,5 +58,37 @@ export function role(role_id) {
             return 'professor';
         case 2:
             return 'student';
+    }
+}
+
+/**
+ * Returns the role in a backend compatible format
+ * @param {Number} role_id The id of the role (frontend only)
+ * @returns The string used in the backend enum
+ */
+export function roleToEnum(role_id) {
+    switch (Number(role_id)) {
+        case 0:
+            return 'ROLE_ADMIN';
+        case 1:
+            return 'ROLE_STUDENT';
+        case 2:
+            return 'ROLE_STUDENT';
+    }
+}
+
+/**
+ * Converts the role from enum format (backend) to its id
+ * @param {String} role_string The role in backend format
+ * @returns The role_id (frontend format)
+ */
+export function roleFromEnum(role_string) {
+    switch (role_string) {
+        case 'ROLE_ADMIN':
+            return 0;
+        case 'ROLE_STUDENT':
+            return 1;
+        case 'ROLE_TEACHER':
+            return 2;
     }
 }

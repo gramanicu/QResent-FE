@@ -1,21 +1,27 @@
 <script>
-    import FormInputText from '$components/forms/FormInputText.svelte';
-    import FormInputEmail from '$components/forms/FormInputEmail.svelte';
     import FormInputPassword from '$components/forms/FormInputPassword.svelte';
     import FormCheckbox from '$components/forms/FormCheckbox.svelte';
+    import FormButton from '$components/forms/FormButton.svelte';
     import FormLink from '$components/forms/FormLink.svelte';
     import { callBackend } from '$lib/backend';
-    import { onMount } from 'svelte';
+    import FormInputText from '$components/forms/FormInputText.svelte';
 
-    onMount(async () => {
+    let user = {
+        username: null,
+        password: null,
+    };
+
+    async function signin() {
+        const url = `/auth/login?username=${user.username}&password=${user.password}`;
+
         try {
-            const data = await callBackend(`/subject/add-subject`, 'POST', {
-                id: 1,
-                name: 'Subj',
-            });
-            console.log(data);
-        } catch (err) {}
-    });
+            const res = await callBackend(url, 'GET');
+            console.log(res);
+        } catch (err) {
+            alert('Invalid Credentials');
+            console.error(err);
+        }
+    }
 </script>
 
 <div class="flex flex-col justify-center items-center w-full h-full screen-container">
@@ -23,8 +29,8 @@
         <h1 class="font-medium text-xl text-center mb-2">Sign In</h1>
 
         <!-- <FormInputText placeholder="Username" label="Username" /> -->
-        <FormInputEmail name="email" placeholder="Educational Institution Email" label="Email" />
-        <FormInputPassword name="password" placeholder="Password" label="Password" />
+        <FormInputText bind:value={user.username} name="username" placeholder="Username" label="Username" />
+        <FormInputPassword bind:value={user.password} name="password" placeholder="Password" label="Password" />
         <div class="flex flex-row w-full mt-4">
             <div class="flex flex-row text-center items-center w-1/2">
                 <FormCheckbox text="Remember me?" name="remember" />
@@ -33,7 +39,7 @@
                 <FormLink url="#" text="Forgot password?" />
             </div>
         </div>
-        <button class="btn btn-primary btn-block mt-6 text-neutral-content">Login</button>
+        <FormButton on:click={signin} class="mt-6" text="Login" />
         <div class="mt-5 text-center">
             <p>
                 Not registered?

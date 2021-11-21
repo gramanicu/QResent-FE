@@ -4,10 +4,10 @@
     import HamburgerSvg from '$components/svg/Hamburger.svelte';
     import TextLogo from '$components/branding/TextLogo.svelte';
     import DownSvg from '$components/svg/DownSvg.svelte';
-    import { user } from '$stores/user';
+    import { auth } from '$stores/user';
 
     let username = 'John Doe';
-    $user.role = 1;
+    $auth.user.role = 1;
 
     // TODO - compute items based on account type
 
@@ -85,7 +85,7 @@
             <div class="flex-grow">
                 <ul class="menu flex flex-col pt-2 w-80 bg-base-100 text-lg p-4">
                     {#each navItems as link}
-                        {#if link.role == $user.role}
+                        {#if link.role == $auth.user.role}
                             <li>
                                 <a
                                     href={link.href}
