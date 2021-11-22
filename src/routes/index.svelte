@@ -1,4 +1,13 @@
 <script>
+    import { onMount } from 'svelte';
+    import { jwt } from '$stores/authentication';
+    import { goto } from '$app/navigation';
+
+    onMount(() => {
+        if ($jwt) {
+            goto('/home');
+        }
+    });
 </script>
 
 <svelte:head>

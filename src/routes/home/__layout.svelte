@@ -4,19 +4,35 @@
     import HamburgerSvg from '$components/svg/Hamburger.svelte';
     import TextLogo from '$components/branding/TextLogo.svelte';
     import DownSvg from '$components/svg/DownSvg.svelte';
-    import { user } from '$stores/user';
+    import { jwt, role, username } from '$stores/authentication';
+    import { goto } from '$app/navigation';
+    import { onMount } from 'svelte';
+    import { roleFromEnum } from '$lib/backend';
 
-    let username = 'John Doe';
-    $user.role = 1;
+    let userRole;
 
-    // TODO - compute items based on account type
+    onMount(() => {
+        if (!$jwt) {
+            goto('/auth/signin');
+            return;
+        }
+
+        userRole = roleFromEnum($role);
+    });
+
+    function signout() {
+        $jwt = null;
+        $role = null;
+        $username = null;
+        goto('/');
+    }
 
     const navItems = [
         { label: 'Users', href: '/home/users', role: 0 },
         { label: 'Classes', href: '/home/classes', role: 1 },
         { label: 'Meeting', href: '/home/meeting', role: 1 },
         { label: 'Statistics', href: '/home/statistics', role: 1 },
-        { label: 'Home', href: '#', role: 2 },
+        { label: 'Classes', href: '/home/classes', role: 2 },
     ];
 </script>
 
@@ -38,7 +54,7 @@
 
             <div class="navbar-end lg:justify-self-end lg:w-full hidden lg:flex flex-row gap-1">
                 <!-- Logged In Username -->
-                <p>{username}</p>
+                <p>{$username}</p>
                 <!-- User dropdown menu -->
                 <div class="dropdown dropdown-end">
                     <div tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
@@ -49,11 +65,12 @@
                     <div
                         tabindex="0"
                         class="shadow-lg border border-gray-300 card compact dropdown-content bg-base-100 rounded-box p-2 gap-1 menu">
-                        <a
+                        <!-- <a
                             class="p-2 bg-base-100 hover:bg-base-300 rounded-lg whitespace-nowrap"
-                            href="/account/settings"><p>Settings</p></a>
-                        <a class="p-2 bg-base-100 hover:bg-base-300 rounded-lg whitespace-nowrap" href="/auth/signout"
-                            ><p>Sign Out</p></a>
+                            href="/account/settings"><p>Settings</p></a> -->
+                        <button
+                            class="p-2 bg-base-100 hover:bg-base-300 rounded-lg whitespace-nowrap"
+                            on:click={signout}>Sign Out</button>
                     </div>
                 </div>
             </div>
@@ -85,7 +102,7 @@
             <div class="flex-grow">
                 <ul class="menu flex flex-col pt-2 w-80 bg-base-100 text-lg p-4">
                     {#each navItems as link}
-                        {#if link.role == $user.role}
+                        {#if link.role == userRole}
                             <li>
                                 <a
                                     href={link.href}
@@ -102,7 +119,7 @@
             <div class="flex lg:hidden flex-col w-full p-2 border-t rounded justify-self-end">
                 <!-- Logout button -->
                 <div class="flex flex-row justify-center items-center">
-                    <a class="btn btn-ghost btn-sm rounded-btn" href="/auth/signout">Sign Out</a>
+                    <button class="btn btn-ghost btn-sm rounded-btn" on:click={signout}>Sign Out</button>
                 </div>
             </div>
         </aside>
