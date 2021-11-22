@@ -1,10 +1,10 @@
 <script>
-    import { roleFromEnum } from '$lib/backend';
+    import { callBackend, roleFromEnum } from '$lib/backend';
     import { goto } from '$app/navigation';
     import { role } from '$stores/authentication';
     import { onMount } from 'svelte';
 
-    onMount(() => {
+    onMount(async () => {
         let userRole = roleFromEnum($role);
 
         if (!(userRole == 1 || userRole == 2)) {
@@ -12,12 +12,14 @@
             goto('/home');
             return;
         }
+
+        const res = await callBackend('/subject/get-all', 'GET');
+        res.forEach(cls => {
+            classes = [...classes, { ...cls }];
+        });
     });
 
-    let classes = [
-        { description: 'test', name: 'mate', requirements: 'nimic', type: 'laborator' },
-        { description: 'test', name: 'fizica', requirements: 'nimic', type: 'seminar' },
-    ];
+    let classes = [];
 </script>
 
 <svelte:head>

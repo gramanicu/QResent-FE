@@ -4,13 +4,19 @@
     import { role } from '$stores/authentication';
     import { onMount } from 'svelte';
 
-    onMount(() => {
+    onMount(async () => {
         let userRole = roleFromEnum($role);
         if (!(userRole == 1)) {
             goto('/home');
             return;
         }
+        const res_subjects = await callBackend('/subject/get-all', 'GET');
+        res_subjects.forEach(cls => {
+            subjects = [...subjects, { ...cls }];
+        });
     });
+
+    let subjects = [];
 </script>
 
 <svelte:head>
@@ -19,5 +25,3 @@
     <meta name="description" content="The page where professors can view the statistics for their classes" />
     <meta name="robots" content="noindex" />
 </svelte:head>
-
-CLASSES
