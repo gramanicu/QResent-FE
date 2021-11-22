@@ -2,11 +2,23 @@
     export let label;
     export let placeholder;
     export let name;
+    export let value = '';
+    export let error = null;
 </script>
 
 <div class="form-control">
     <label for={name} class="label">
         <span class="label-text">{label}</span>
     </label>
-    <input type="text" {name} {placeholder} class="input input-primary input-bordered" />
+    <input
+        bind:value
+        type="text"
+        {name}
+        {placeholder}
+        class="{$$props.class} input  {!error ? 'input-primary' : 'input-error'} input-bordered" />
+    {#if error}
+        <label for={name} class="label">
+            <span class="label-text-alt">{error}</span>
+        </label>
+    {/if}
 </div>

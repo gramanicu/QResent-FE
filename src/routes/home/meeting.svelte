@@ -1,14 +1,55 @@
 <script>
-    import { user } from '$stores/user';
     import QrCode from '$components/QRCode.svelte';
+    import { callBackend, roleFromEnum } from '$lib/backend';
+    import { goto } from '$app/navigation';
+    import { role } from '$stores/authentication';
+    import { onMount } from 'svelte';
 
-    $user.role = 1;
+    function makeid(length) {
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    onMount(async () => {
+        let userRole = roleFromEnum($role);
+        if (!(userRole == 1)) {
+            goto('/home');
+            return;
+        }
+
+        const res = await callBackend('/subject/get-all', 'GET');
+        res.forEach(cls => {
+            classes = [...classes, { ...cls }];
+        });
+    });
+
+    let classes = [];
 
     var timeLeft;
     var timerId;
     let meetingStarted = false;
     let qrShown = false;
+    let qr_url = '';
     let statisticsArr = [{ start_time: '12:00', count: '3' }];
+
+    async function startMeeting(class_id) {
+        meetStatus();
+        try {
+            const res = await callBackend('/meeting/add', 'POST', {
+                startTime: new Date().toISOString(),
+                subject: classes.find(cls => cls.id == class_id),
+            });
+        } catch (err) {
+            console.error(err);
+        }
+
+        console.log(res);
+    }
 
     function meetStatus() {
         meetingStarted = !meetingStarted;
@@ -16,6 +57,11 @@
     }
 
     function showHeadcount() {
+        let qr_token = makeid(32);
+        qr_url = `${window.location.host}/home/qr/${qr_token}`;
+
+        console.log(qr_url);
+
         qrShown = !qrShown;
         if (qrShown) {
             timeLeft = 60;
@@ -42,7 +88,17 @@
 
 <div class="flex flex-row py-4 px-4">
     {#if !meetingStarted}
-        <button id="meetingStart" class="btn text-neutral-content" on:click={meetStatus}>Start meeting</button>
+        <div class="flex flex-col">
+            {#each classes as cls}
+                <div class="flex flex-row mb-2">
+                    <h1 class="mr-4">Subject: {cls.name}</h1>
+                    <button
+                        id="meetingStart"
+                        class="btn btn-xs text-neutral-content"
+                        on:click={() => startMeeting(cls.id)}>Start meeting</button>
+                </div>
+            {/each}
+        </div>
     {:else}
         <div class="flex flex-col">
             {#if !qrShown}
@@ -54,7 +110,7 @@
                     <p class="mb-5">{timeLeft} seconds remaining</p>
                 {/if}
                 <div id="qrcode" class="w-64 h-64 mb-5">
-                    <QrCode text="https://daisyui.com/" size="128" />
+                    <QrCode text={qr_url} />
                 </div>
             {/if}
             {#each statisticsArr as stats, index}

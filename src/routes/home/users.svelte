@@ -3,21 +3,29 @@
     import CloseSvg from '$components/svg/CloseSvg.svelte';
     import TableInputEmail from '$components/table/TableInputEmail.svelte';
     import TableInputText from '$components/table/TableInputText.svelte';
-    import { role } from '$lib/backend';
-    import { user } from '$stores/user';
+    import { callBackend, roleToString } from '$lib/backend';
+    import { roleFromEnum } from '$lib/backend';
+    import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
+    import { role, username as loggedname } from '$stores/authentication';
 
-    $user.role = 0;
+    onMount(async () => {
+        let userRole = roleFromEnum($role);
+        if (!(userRole == 0)) {
+            goto('/home');
+            return;
+        }
 
-    let users = [
-        {
-            id: '1',
-            username: 'john doe',
-            email: 'a.a@stud.acs.upb.ro',
-            first_name: 'john',
-            last_name: 'doe',
-            role: '1',
-        },
-    ];
+        const res = await callBackend('/auth/get-all-users', 'GET');
+        res.forEach(user => {
+            user.role = roleFromEnum(user.role);
+            users = [...users, { ...user }];
+        });
+    });
+
+    let users = [];
+    let newUsers = [];
+    let deletedUsers = [];
 
     let newUser = {
         id: null,
@@ -25,42 +33,120 @@
         email: null,
         first_name: null,
         last_name: null,
+        password: null,
         role: '1',
     };
 
-    async function changeUserRole(user_id, role_id) {
-        users.find(user => user.id == user_id).role = role_id;
+    /**
+     * Edit a users role
+     * @param username The username of the user to change
+     * @param role_id The new role of that user
+     */
+    async function changeUserRole(username, role_id) {
+        if ($loggedname == username) return;
+
+        users.find(user => user.username == username).role = role_id;
 
         // This is done to update DOM
         users = users;
     }
 
-    async function removeUser(user_id) {
-        users = users.filter(user => user.id != user_id);
+    /**
+     * Marks a user for deletion (removes it from the table and adds him to the list for deleted users)
+     * @param username The username of the user to delete
+     */
+    async function removeUser(username) {
+        if ($loggedname == username) return;
+        let d_user = users.find(user => user.username == username);
+
+        if (!d_user) {
+            d_user = newUsers.find(user => user.username == username);
+
+            if (!d_user) {
+                return;
+            }
+
+            newUsers = newUsers.filter(user => user.username != username);
+        } else {
+            // Only the users that already existed need to be added to the deleted users list
+            users = users.filter(user => user.username != username);
+            deletedUsers.push(d_user);
+        }
     }
 
+    /**
+     * Add a new user to the list. (he will be added to the new user list)
+     * The user list stores users that can be modified (put route), the new user lists stores the new users (post route)
+     */
     async function addUser() {
         if (newUser.username == null) newUser.username = 'John Doe';
         if (newUser.email == null) newUser.email = 'john.doe@stud.acs.upb.ro';
         if (newUser.first_name == null) newUser.first_name = 'John';
         if (newUser.last_name == null) newUser.last_name = 'Doe';
 
-        users = [...users, { ...newUser }];
+        newUser.password = '12345678';
 
-        newUser = {
-            id: null,
-            username: null,
-            email: null,
-            first_name: null,
-            last_name: null,
-            role: '1',
-        };
+        let full_users = [...users, ...newUsers];
+
+        if (!full_users.find(user => user.username == newUser.username || user.email == newUser.email)) {
+            newUsers = [...newUsers, { ...newUser }];
+
+            newUser = {
+                id: null,
+                username: null,
+                email: null,
+                first_name: null,
+                last_name: null,
+                role: '1',
+            };
+        } else {
+            alert('Username or Email already in use');
+        }
+    }
+
+    /**
+     * Add a new user request
+     * @param user The new user
+     */
+    async function sendNewUser(user) {
+        try {
+            const res = await callBackend('/auth/register', 'POST', user);
+            console.log(res);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function sendEditUser(user) {
+        try {
+            const res = await callBackend(`/auth/update-user/${user.username}`, 'PUT', user);
+            console.log(res);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    async function sendDeleteUser(user) {
+        try {
+            const res = await callBackend(`/auth/delete/${user.username}`, 'DELETE');
+            console.log(res);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    /**
+     * Save all the modifications done in the table
+     */
+    async function save() {
+        users.forEach(user => sendEditUser(user));
+        newUsers.forEach(user => sendNewUser(user));
+        deletedUsers.forEach(user => sendDeleteUser(user));
     }
 </script>
 
 <div class="w-full overflow-x-auto min-h-full">
     <div class="p-4">
-        <button class="btn btn-outline btn-success btn-block">Save</button>
+        <button on:click={save} class="btn btn-outline btn-success btn-block">Save</button>
     </div>
 
     <table class="table w-full border border-base-300">
@@ -108,7 +194,9 @@
                         placeholder="Last Name" />
                 </td>
                 <td class="dropdown">
-                    <div tabindex="0" class="badge-lg badge cursor-pointer capitalize">{role(newUser.role)}</div>
+                    <div tabindex="0" class="badge-lg badge cursor-pointer capitalize">
+                        {roleToString(newUser.role)}
+                    </div>
                     <div
                         tabindex="0"
                         class="shadow-lg border mt-1 border-gray-300 card compact dropdown-content bg-base-100 rounded-box p-2 gap-1 menu">
@@ -118,7 +206,7 @@
                                 on:click={() => {
                                     newUser.role = role_id;
                                 }}>
-                                {role(role_id)}
+                                {roleToString(role_id)}
                             </div>
                         {/each}
                     </div>
@@ -126,7 +214,7 @@
                 <td on:click={addUser} class="sticky left-0 z-10 cursor-pointer text-white bg-neutral"><AddSvg /></td>
             </tr>
 
-            {#each users as user, index}
+            {#each [...users, ...newUsers] as user, index}
                 <tr class="">
                     <td class="sticky left-0 z-10">{index}</td>
                     <td><TableInputText bind:value={user.username} name="username" placeholder="Username" /></td>
@@ -145,22 +233,26 @@
 
                     <td class="dropdown">
                         <div tabindex="0" class="badge-lg badge cursor-pointer capitalize">
-                            {role(user.role)}
+                            {roleToString(user.role)}
                         </div>
-                        <div
-                            tabindex="0"
-                            class="shadow-lg mt-1 border border-gray-300 card compact dropdown-content bg-base-100 rounded-box p-2 gap-1 menu">
-                            {#each Array(3) as _, role_id}
-                                <div
-                                    class="p-2 bg-base-100 cursor-pointer capitalize hover:bg-base-300 rounded-lg whitespace-nowrap"
-                                    on:click={() => changeUserRole(user.id, role_id)}>
-                                    {role(role_id)}
-                                </div>
-                            {/each}
-                        </div>
+                        {#if $loggedname != user.username}
+                            <div
+                                tabindex="0"
+                                class="shadow-lg mt-1 border border-gray-300 card compact dropdown-content bg-base-100 rounded-box p-2 gap-1 menu">
+                                {#each Array(3) as _, role_id}
+                                    <div
+                                        class="p-2 bg-base-100 cursor-pointer capitalize hover:bg-base-300 rounded-lg whitespace-nowrap"
+                                        on:click={() => changeUserRole(user.username, role_id)}>
+                                        {roleToString(role_id)}
+                                    </div>
+                                {/each}
+                            </div>
+                        {/if}
                     </td>
-                    <td class="sticky left-0 z-10 cursor-pointer text-red-900" on:click={removeUser(user.id)}
-                        ><CloseSvg /></td>
+                    {#if $loggedname != user.username}
+                        <td class="sticky left-0 z-10 cursor-pointer text-red-900" on:click={removeUser(user.username)}
+                            ><CloseSvg /></td>
+                    {/if}
                 </tr>
             {/each}
         </tbody>

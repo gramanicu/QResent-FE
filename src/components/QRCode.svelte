@@ -3,7 +3,6 @@
     import { onMount } from 'svelte';
 
     export let text;
-    export let size;
 
     let wrapper;
 
