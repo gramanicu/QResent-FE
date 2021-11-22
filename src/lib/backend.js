@@ -1,5 +1,6 @@
 import { vars } from '$lib/variables';
-import { auth } from '$stores/user';
+import { jwt } from '$stores/authentication';
+import { get } from 'svelte/store';
 
 /**
  * Calls the backend routes
@@ -20,10 +21,10 @@ export async function callBackend(route, method, body, headers) {
         };
     }
 
-    if (auth.jwt != null) {
+    if (get(jwt) != null) {
         headers = {
             ...headers,
-            Authorization: `Bearer ${auth.jwt}`,
+            Authorization: `Bearer ${get(jwt)}`,
         };
     }
 
@@ -71,7 +72,7 @@ export function roleToEnum(role_id) {
         case 0:
             return 'ROLE_ADMIN';
         case 1:
-            return 'ROLE_STUDENT';
+            return 'ROLE_TEACHER';
         case 2:
             return 'ROLE_STUDENT';
     }
@@ -86,9 +87,9 @@ export function roleFromEnum(role_string) {
     switch (role_string) {
         case 'ROLE_ADMIN':
             return 0;
-        case 'ROLE_STUDENT':
-            return 1;
         case 'ROLE_TEACHER':
+            return 1;
+        case 'ROLE_STUDENT':
             return 2;
     }
 }

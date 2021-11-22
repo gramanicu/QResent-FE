@@ -1,8 +1,17 @@
 <script>
-    import { auth } from '$stores/user';
     import QrCode from '$components/QRCode.svelte';
+    import { roleFromEnum } from '$lib/backend';
+    import { goto } from '$app/navigation';
+    import { role } from '$stores/authentication';
+    import { onMount } from 'svelte';
 
-    $auth.user.role = 1;
+    onMount(() => {
+        let userRole = roleFromEnum($role);
+        if (!(userRole == 1)) {
+            goto('/home');
+            return;
+        }
+    });
 
     var timeLeft;
     var timerId;

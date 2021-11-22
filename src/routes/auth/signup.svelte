@@ -5,6 +5,8 @@
     import FormLink from '$components/forms/FormLink.svelte';
     import FormButton from '$components/forms/FormButton.svelte';
     import { callBackend, roleToEnum } from '$lib/backend';
+    import { jwt, role, username } from '$stores/authentication';
+    import { goto } from '$app/navigation';
 
     let confirmPassword = null;
     let user = {
@@ -52,9 +54,19 @@
 
         if (isValid()) {
             try {
-                const res = await callBackend('/auth/register', 'POST', user);
-                console.log(res);
+                let res = await callBackend('/auth/register', 'POST', user);
+
+                $jwt = res;
+
+                res = await callBackend('/auth/get-user-details', 'GET');
+
+                $role = res.role;
+                $username = res.username;
+                goto('/home');
             } catch (err) {
+                $jwt = null;
+                $role = null;
+                $username = null;
                 console.error(err);
             }
         }

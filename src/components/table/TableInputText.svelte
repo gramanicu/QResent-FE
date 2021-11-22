@@ -1,7 +1,7 @@
 <script>
     export let placeholder;
     export let name;
-    export let value;
+    export let value = '';
 </script>
 
 <div class="form-control">

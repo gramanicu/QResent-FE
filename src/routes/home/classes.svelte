@@ -1,7 +1,19 @@
 <script>
-    import { auth } from '$stores/user';
+    import { roleFromEnum } from '$lib/backend';
+    import { goto } from '$app/navigation';
+    import { role } from '$stores/authentication';
+    import { onMount } from 'svelte';
 
-    $auth.user.role = 1;
+    onMount(() => {
+        let userRole = roleFromEnum($role);
+
+        if (!(userRole == 1 || userRole == 2)) {
+            console.log(`asdasd ${userRole}`);
+            goto('/home');
+            return;
+        }
+    });
+
     let classes = [
         { description: 'test', name: 'mate', requirements: 'nimic', type: 'laborator' },
         { description: 'test', name: 'fizica', requirements: 'nimic', type: 'seminar' },

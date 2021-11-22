@@ -1,18 +1,23 @@
 <script>
-    import { auth } from '$stores/user';
+    import { roleFromEnum } from '$lib/backend';
+    import { goto } from '$app/navigation';
+    import { role } from '$stores/authentication';
+    import { beforeUpdate, onMount } from 'svelte';
 
-    $auth.user.role = 3;
+    function redirect() {
+        switch (roleFromEnum($role)) {
+            case 0:
+                goto('/home/users');
+                break;
+            case 1:
+                goto('/home/classes');
+                break;
+            case 2:
+                goto('/home/classes');
+                break;
+        }
+    }
+
+    onMount(() => redirect());
+    beforeUpdate(() => redirect());
 </script>
-
-<svelte:head>
-    <html lang="en-GB" />
-    <title>QResent Home</title>
-    <meta name="description" content="The QResent user homepage" />
-    <meta name="robots" content="noindex" />
-</svelte:head>
-
-<div class="p-4 rounded-lg bg-gray-300 m-4 border border-gray-600 flex flex-col gap-4">
-    <div class="btn btn-block"><a href="/home/users">Admin homepage</a></div>
-    <div class="btn btn-block"><a href="/home/classes">Professor homepage</a></div>
-    <div class="btn btn-block"><a href="/home/validate">Student homepage</a></div>
-</div>

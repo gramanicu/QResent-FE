@@ -1,6 +1,3 @@
-<script>
-</script>
-
 <svelte:head>
     <html lang="en-GB" />
     <title>QResent</title>

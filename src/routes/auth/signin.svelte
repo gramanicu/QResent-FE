@@ -5,6 +5,8 @@
     import FormLink from '$components/forms/FormLink.svelte';
     import { callBackend } from '$lib/backend';
     import FormInputText from '$components/forms/FormInputText.svelte';
+    import { jwt, role, username } from '$stores/authentication';
+    import { goto } from '$app/navigation';
 
     let user = {
         username: null,
@@ -12,12 +14,23 @@
     };
 
     async function signin() {
+        if (user.username == null || user.password == null) return;
+
         const url = `/auth/login?username=${user.username}&password=${user.password}`;
 
         try {
-            const res = await callBackend(url, 'GET');
-            console.log(res);
+            let res = await callBackend(url, 'GET');
+            $jwt = res;
+
+            res = await callBackend('/auth/get-user-details', 'GET');
+
+            $role = res.role;
+            $username = res.username;
+            goto('/home');
         } catch (err) {
+            $jwt = null;
+            $role = null;
+            $username = null;
             alert('Invalid Credentials');
             console.error(err);
         }
