@@ -31,8 +31,8 @@
         id: null,
         username: null,
         email: null,
-        first_name: null,
-        last_name: null,
+        firstName: null,
+        lastName: null,
         password: null,
         role: '1',
     };
@@ -81,8 +81,8 @@
     async function addUser() {
         if (newUser.username == null) newUser.username = 'John Doe';
         if (newUser.email == null) newUser.email = 'john.doe@stud.acs.upb.ro';
-        if (newUser.first_name == null) newUser.first_name = 'John';
-        if (newUser.last_name == null) newUser.last_name = 'Doe';
+        if (newUser.firstName == null) newUser.firstName = 'John';
+        if (newUser.lastName == null) newUser.lastName = 'Doe';
 
         newUser.password = '12345678';
 
@@ -95,8 +95,8 @@
                 id: null,
                 username: null,
                 email: null,
-                first_name: null,
-                last_name: null,
+                firstName: null,
+                lastName: null,
                 role: '1',
             };
         } else {
@@ -182,14 +182,14 @@
                 <td class="hidden lg:table-cell">
                     <TableInputText
                         class="input-primary"
-                        bind:value={newUser.first_name}
+                        bind:value={newUser.firstName}
                         name="First Name"
                         placeholder="First Name" />
                 </td>
                 <td class="hidden lg:table-cell">
                     <TableInputText
                         class="input-primary"
-                        bind:value={newUser.last_name}
+                        bind:value={newUser.lastName}
                         name="Last Name"
                         placeholder="Last Name" />
                 </td>
@@ -227,9 +227,9 @@
                             placeholder="Email" />
                     </td>
                     <td class="hidden lg:table-cell"
-                        ><TableInputText bind:value={user.first_name} name="First Name" placeholder="First Name" /></td>
+                        ><TableInputText bind:value={user.firstName} name="First Name" placeholder="First Name" /></td>
                     <td class="hidden lg:table-cell"
-                        ><TableInputText bind:value={user.last_name} name="Last Name" placeholder="Last Name" /></td>
+                        ><TableInputText bind:value={user.lastName} name="Last Name" placeholder="Last Name" /></td>
 
                     <td class="dropdown">
                         <div tabindex="0" class="badge-lg badge cursor-pointer capitalize">
