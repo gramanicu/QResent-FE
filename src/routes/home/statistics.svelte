@@ -1,5 +1,5 @@
 <script>
-    import { roleFromEnum } from '$lib/backend';
+    import { callBackend, roleFromEnum } from '$lib/backend';
     import { goto } from '$app/navigation';
     import { role } from '$stores/authentication';
     import { onMount } from 'svelte';

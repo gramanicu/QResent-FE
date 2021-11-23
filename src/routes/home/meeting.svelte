@@ -58,7 +58,6 @@
                 endTime: new Date().toISOString(),
             });
 
-            console.log(res);
             meetStatus();
         } catch (err) {
             console.error(err);
@@ -84,14 +83,13 @@
                     id: meet_id,
                 },
             });
-
-            console.log(res);
         } catch (err) {
             console.error(err);
             return;
         }
 
         console.log(qr_url);
+
         qrShown = !qrShown;
         if (qrShown) {
             timeLeft = 60;

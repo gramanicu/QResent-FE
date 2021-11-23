@@ -29,7 +29,7 @@
 
     const navItems = [
         { label: 'Users', href: '/home/users', role: 0 },
-        { label: 'Classes', href: '/home/classes', role: 1 },
+        { label: 'Classes', href: '/home/edit-classes', role: 1 },
         { label: 'Meeting', href: '/home/meeting', role: 1 },
         { label: 'Statistics', href: '/home/statistics', role: 1 },
         { label: 'Classes', href: '/home/classes', role: 2 },
