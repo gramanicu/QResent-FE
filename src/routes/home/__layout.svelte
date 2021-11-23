@@ -18,13 +18,28 @@
         }
 
         userRole = roleFromEnum($role);
+        const html_tag = document.body.parentNode;
+
+        switch (userRole) {
+            case 0:
+                html_tag.dataset.theme = 'halloween';
+                break;
+            case 1:
+                html_tag.dataset.theme = 'corporate';
+                break;
+            case 2:
+                html_tag.dataset.theme = 'cyberpunk';
+                break;
+            default:
+                html_tag.dataset.theme = 'cupcake';
+                break;
+        }
 
         const verifyJWT = setInterval(async () => {
             try {
-                const res = await callBackend('/auth/get-user-details', 'GET');
+                const res = await callBackend('/auth/refresh', 'GET');
 
-                $role = res.role;
-                $username = res.username;
+                $jwt = res;
             } catch (err) {
                 $jwt = null;
                 $role = null;
