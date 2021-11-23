@@ -30,25 +30,39 @@
 
     let classes = [];
 
-    var timeLeft;
-    var timerId;
+    let timeLeft;
+    let timerId;
     let meetingStarted = false;
     let qrShown = false;
     let qr_url = '';
     let statisticsArr = [{ start_time: '12:00', count: '3' }];
+    let meet_id;
 
     async function startMeeting(class_id) {
-        meetStatus();
         try {
             const res = await callBackend('/meeting/add', 'POST', {
                 startTime: new Date().toISOString(),
                 subject: classes.find(cls => cls.id == class_id),
             });
+
+            meet_id = res.id;
+            meetStatus();
         } catch (err) {
             console.error(err);
         }
+    }
 
-        console.log(res);
+    async function stopMeeting() {
+        try {
+            const res = await callBackend(`/meeting/update/${meet_id}`, 'PUT', {
+                endTime: new Date().toISOString(),
+            });
+
+            console.log(res);
+            meetStatus();
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     function meetStatus() {
@@ -56,12 +70,28 @@
         qrShown = false;
     }
 
-    function showHeadcount() {
+    async function showHeadcount() {
         let qr_token = makeid(32);
-        qr_url = `${window.location.host}/home/qr/${qr_token}`;
+        qr_url = `${window.location.protocol}//${window.location.host}/home/qr/${qr_token}`;
+        let expire = new Date();
+        expire = new Date(expire.getTime() + 1000 * 60);
+
+        try {
+            const res = await callBackend(`/headcount/add`, 'POST', {
+                token: qr_token,
+                expiresAt: expire.toISOString(),
+                meeting: {
+                    id: meet_id,
+                },
+            });
+
+            console.log(res);
+        } catch (err) {
+            console.error(err);
+            return;
+        }
 
         console.log(qr_url);
-
         qrShown = !qrShown;
         if (qrShown) {
             timeLeft = 60;
@@ -116,7 +146,7 @@
             {#each statisticsArr as stats, index}
                 <p class="pb-2">Stats: {stats.start_time} {stats.count} {index + 1}</p>
             {/each}
-            <button id="meetingClose" class="btn text-neutral-content" on:click={meetStatus}>Stop meeting</button>
+            <button id="meetingClose" class="btn text-neutral-content" on:click={stopMeeting}>Stop meeting</button>
         </div>
     {/if}
 </div>
