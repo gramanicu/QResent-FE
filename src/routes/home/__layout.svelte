@@ -33,7 +33,7 @@
                 goto('/auth/signin');
                 return;
             }
-        }, 1000);
+        }, 1000 * 60);
     });
 
     function signout() {
