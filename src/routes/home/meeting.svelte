@@ -72,7 +72,7 @@
 
     async function showHeadcount() {
         let qr_token = makeid(32);
-        qr_url = `${window.location.host}/home/qr/${qr_token}`;
+        qr_url = `${window.location.protocol}//${window.location.host}/home/qr/${qr_token}`;
         let expire = new Date();
         expire = new Date(expire.getTime() + 1000 * 60);
 
