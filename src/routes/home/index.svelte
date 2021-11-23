@@ -10,7 +10,7 @@
                 goto('/home/users');
                 break;
             case 1:
-                goto('/home/classes');
+                goto('/home/edit-classes');
                 break;
             case 2:
                 goto('/home/classes');

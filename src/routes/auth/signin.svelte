@@ -27,8 +27,6 @@
             $role = res.role;
             $username = res.username;
 
-            console.log($backUrl);
-
             if ($backUrl) {
                 let url = $backUrl;
                 $backUrl = null;

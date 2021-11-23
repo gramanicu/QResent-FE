@@ -3,7 +3,7 @@
     import CloseSvg from '$components/svg/CloseSvg.svelte';
     import TableInputEmail from '$components/table/TableInputEmail.svelte';
     import TableInputText from '$components/table/TableInputText.svelte';
-    import { callBackend, roleToString } from '$lib/backend';
+    import { callBackend, roleToEnum, roleToString } from '$lib/backend';
     import { roleFromEnum } from '$lib/backend';
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
@@ -16,11 +16,15 @@
             return;
         }
 
-        const res = await callBackend('/auth/get-all-users', 'GET');
-        res.forEach(user => {
-            user.role = roleFromEnum(user.role);
-            users = [...users, { ...user }];
-        });
+        try {
+            const res = await callBackend('/auth/get-all-users', 'GET');
+            res.forEach(user => {
+                user.role = roleFromEnum(user.role);
+                users = [...users, { ...user }];
+            });
+        } catch (err) {
+            console.error(err);
+        }
     });
 
     let users = [];
@@ -31,8 +35,8 @@
         id: null,
         username: null,
         email: null,
-        first_name: null,
-        last_name: null,
+        firstName: null,
+        lastName: null,
         password: null,
         role: '1',
     };
@@ -79,10 +83,11 @@
      * The user list stores users that can be modified (put route), the new user lists stores the new users (post route)
      */
     async function addUser() {
-        if (newUser.username == null) newUser.username = 'John Doe';
+        if (newUser.username == null) newUser.username = 'john_doe';
         if (newUser.email == null) newUser.email = 'john.doe@stud.acs.upb.ro';
-        if (newUser.first_name == null) newUser.first_name = 'John';
-        if (newUser.last_name == null) newUser.last_name = 'Doe';
+        if (newUser.firstName == null) newUser.firstName = 'John';
+        if (newUser.lastName == null) newUser.lastName = 'Doe';
+        if (newUser.role == null) newUser.role = '1';
 
         newUser.password = '12345678';
 
@@ -95,8 +100,8 @@
                 id: null,
                 username: null,
                 email: null,
-                first_name: null,
-                last_name: null,
+                firstName: null,
+                lastName: null,
                 role: '1',
             };
         } else {
@@ -109,26 +114,43 @@
      * @param user The new user
      */
     async function sendNewUser(user) {
+        delete user['id'];
         try {
+            user.role = roleToEnum(user.role);
             const res = await callBackend('/auth/register', 'POST', user);
-            console.log(res);
         } catch (err) {
             console.error(err);
         }
     }
 
     async function sendEditUser(user) {
+        delete user['id'];
         try {
-            const res = await callBackend(`/auth/update-user/${user.username}`, 'PUT', user);
-            console.log(res);
+            user.role = roleToEnum(user.role);
+            const res = await callBackend(`/auth/update-user/?username=${user.username}`, 'PUT', user);
         } catch (err) {
             console.error(err);
         }
     }
     async function sendDeleteUser(user) {
+        delete user['id'];
         try {
-            const res = await callBackend(`/auth/delete/${user.username}`, 'DELETE');
-            console.log(res);
+            const res = await callBackend(`/auth/delete-user/?username=${user.username}`, 'DELETE');
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function refreshTable() {
+        try {
+            const res = await callBackend('/auth/get-all-users', 'GET');
+            users = [];
+            newUsers = [];
+            deletedUsers = [];
+            res.forEach(user => {
+                user.role = roleFromEnum(user.role);
+                users = [...users, { ...user }];
+            });
         } catch (err) {
             console.error(err);
         }
@@ -138,9 +160,19 @@
      * Save all the modifications done in the table
      */
     async function save() {
-        users.forEach(user => sendEditUser(user));
-        newUsers.forEach(user => sendNewUser(user));
-        deletedUsers.forEach(user => sendDeleteUser(user));
+        for (const user of users) {
+            await sendEditUser(user);
+        }
+
+        for (const user of newUsers) {
+            await sendNewUser(user);
+        }
+
+        for (const user of deletedUsers) {
+            await sendDeleteUser(user);
+        }
+
+        await refreshTable();
     }
 </script>
 
@@ -182,14 +214,14 @@
                 <td class="hidden lg:table-cell">
                     <TableInputText
                         class="input-primary"
-                        bind:value={newUser.first_name}
+                        bind:value={newUser.firstName}
                         name="First Name"
                         placeholder="First Name" />
                 </td>
                 <td class="hidden lg:table-cell">
                     <TableInputText
                         class="input-primary"
-                        bind:value={newUser.last_name}
+                        bind:value={newUser.lastName}
                         name="Last Name"
                         placeholder="Last Name" />
                 </td>
@@ -217,7 +249,13 @@
             {#each [...users, ...newUsers] as user, index}
                 <tr class="">
                     <td class="sticky left-0 z-10">{index}</td>
-                    <td><TableInputText bind:value={user.username} name="username" placeholder="Username" /></td>
+                    <td
+                        ><TableInputText
+                            disabled="true"
+                            class="cursor-default"
+                            bind:value={user.username}
+                            name="username"
+                            placeholder="Username" /></td>
                     <td>
                         <TableInputEmail
                             bind:value={user.email}
@@ -227,9 +265,9 @@
                             placeholder="Email" />
                     </td>
                     <td class="hidden lg:table-cell"
-                        ><TableInputText bind:value={user.first_name} name="First Name" placeholder="First Name" /></td>
+                        ><TableInputText bind:value={user.firstName} name="First Name" placeholder="First Name" /></td>
                     <td class="hidden lg:table-cell"
-                        ><TableInputText bind:value={user.last_name} name="Last Name" placeholder="Last Name" /></td>
+                        ><TableInputText bind:value={user.lastName} name="Last Name" placeholder="Last Name" /></td>
 
                     <td class="dropdown">
                         <div tabindex="0" class="badge-lg badge cursor-pointer capitalize">
