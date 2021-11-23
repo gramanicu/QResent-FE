@@ -15,6 +15,7 @@
             correctLevel: QRCode.CorrectLevel.H,
             dotScale: 0.6,
             dotScaleTiming: 1,
+            tooltip: true,
         };
         new QRCode(wrapper, options);
     });

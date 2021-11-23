@@ -5,7 +5,7 @@
     import FormLink from '$components/forms/FormLink.svelte';
     import { callBackend } from '$lib/backend';
     import FormInputText from '$components/forms/FormInputText.svelte';
-    import { jwt, role, username } from '$stores/authentication';
+    import { backUrl, jwt, role, username } from '$stores/authentication';
     import { goto } from '$app/navigation';
 
     let user = {
@@ -26,7 +26,17 @@
 
             $role = res.role;
             $username = res.username;
-            goto('/home');
+
+            console.log($backUrl);
+
+            if ($backUrl) {
+                let url = $backUrl;
+                $backUrl = null;
+                console.log(url);
+                goto(url);
+            } else {
+                goto('/home');
+            }
         } catch (err) {
             $jwt = null;
             $role = null;

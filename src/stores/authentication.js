@@ -4,6 +4,7 @@ import { browser } from '$app/env';
 export const username = writable((browser && localStorage.getItem('username')) || null);
 export const role = writable((browser && localStorage.getItem('role')) || null);
 export const jwt = writable((browser && localStorage.getItem('jwt')) || null);
+export const backUrl = writable('');
 
 function updateLocalStorage(key, val) {
     if (browser) {
