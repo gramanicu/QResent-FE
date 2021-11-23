@@ -2,12 +2,14 @@
     import { page } from '$app/stores';
     import { callBackend, roleFromEnum } from '$lib/backend';
     import { goto } from '$app/navigation';
-    import { role } from '$stores/authentication';
+    import { backUrl, role } from '$stores/authentication';
     import { onMount } from 'svelte';
 
     onMount(async () => {
         let userRole = roleFromEnum($role);
         if (!(userRole == 2)) {
+            $backUrl = window.location.pathname;
+            console.log($backUrl);
             goto('/home');
             return;
         }
