@@ -88,7 +88,7 @@
 <div class="card mt-4 mx-4 p-2 rounded-lg shadow-xl border">
     <h1 class="card-title mx-4 mt-2">Subjects</h1>
     {#each subjects as subj, index}
-        <div tabindex="0" class="collapse rounded-lg collapse-arrow">
+        <div tabindex="0" class="collapse rounded-lg collapse-arrow mb-4">
             <input type="checkbox" />
             <div class="collapse-title text-xl font-medium">
                 <h1 class="inline-block">{subj.name}</h1>
