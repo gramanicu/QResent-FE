@@ -22,10 +22,14 @@
             return;
         }
 
-        const res = await callBackend('/subject/get-all', 'GET');
-        res.forEach(cls => {
-            classes = [...classes, { ...cls }];
-        });
+        try {
+            const res = await callBackend('/subject/get-all', 'GET');
+            res.forEach(cls => {
+                classes = [...classes, { ...cls }];
+            });
+        } catch (err) {
+            console.error(err);
+        }
     });
 
     let classes = [];

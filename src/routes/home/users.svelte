@@ -16,11 +16,15 @@
             return;
         }
 
-        const res = await callBackend('/auth/get-all-users', 'GET');
-        res.forEach(user => {
-            user.role = roleFromEnum(user.role);
-            users = [...users, { ...user }];
-        });
+        try {
+            const res = await callBackend('/auth/get-all-users', 'GET');
+            res.forEach(user => {
+                user.role = roleFromEnum(user.role);
+                users = [...users, { ...user }];
+            });
+        } catch (err) {
+            console.error(err);
+        }
     });
 
     let users = [];
@@ -138,14 +142,18 @@
     }
 
     async function refreshTable() {
-        const res = await callBackend('/auth/get-all-users', 'GET');
-        users = [];
-        newUsers = [];
-        deletedUsers = [];
-        res.forEach(user => {
-            user.role = roleFromEnum(user.role);
-            users = [...users, { ...user }];
-        });
+        try {
+            const res = await callBackend('/auth/get-all-users', 'GET');
+            users = [];
+            newUsers = [];
+            deletedUsers = [];
+            res.forEach(user => {
+                user.role = roleFromEnum(user.role);
+                users = [...users, { ...user }];
+            });
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     /**

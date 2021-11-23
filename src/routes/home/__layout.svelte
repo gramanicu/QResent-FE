@@ -7,7 +7,7 @@
     import { jwt, role, username } from '$stores/authentication';
     import { goto } from '$app/navigation';
     import { onMount } from 'svelte';
-    import { roleFromEnum } from '$lib/backend';
+    import { callBackend, roleFromEnum } from '$lib/backend';
 
     let userRole;
 
@@ -18,6 +18,22 @@
         }
 
         userRole = roleFromEnum($role);
+
+        const verifyJWT = setInterval(async () => {
+            try {
+                const res = await callBackend('/auth/get-user-details', 'GET');
+
+                $role = res.role;
+                $username = res.username;
+            } catch (err) {
+                $jwt = null;
+                $role = null;
+                $username = null;
+                clearInterval(verifyJWT);
+                goto('/auth/signin');
+                return;
+            }
+        }, 1000);
     });
 
     function signout() {

@@ -15,10 +15,14 @@
             return;
         }
 
-        const res = await callBackend('/subject/get-all', 'GET');
-        res.forEach(subject => {
-            subjects = [...subjects, { ...subject }];
-        });
+        try {
+            const res = await callBackend('/subject/get-all', 'GET');
+            res.forEach(subject => {
+                subjects = [...subjects, { ...subject }];
+            });
+        } catch (err) {
+            console.error(err);
+        }
     });
 
     let subjects = [];
@@ -128,13 +132,17 @@
     }
 
     async function refreshTable() {
-        const res = await callBackend('/subject/get-all', 'GET');
-        subjects = [];
-        newSubjects = [];
-        deleteSubjects = [];
-        res.forEach(subject => {
-            subjects = [...subjects, { ...subject }];
-        });
+        try {
+            const res = await callBackend('/subject/get-all', 'GET');
+            subjects = [];
+            newSubjects = [];
+            deleteSubjects = [];
+            res.forEach(subject => {
+                subjects = [...subjects, { ...subject }];
+            });
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     /**

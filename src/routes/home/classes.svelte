@@ -13,10 +13,14 @@
             return;
         }
 
-        const res = await callBackend('/subject/get-all', 'GET');
-        res.forEach(cls => {
-            classes = [...classes, { ...cls }];
-        });
+        try {
+            const res = await callBackend('/subject/get-all', 'GET');
+            res.forEach(cls => {
+                classes = [...classes, { ...cls }];
+            });
+        } catch (err) {
+            console.error(err);
+        }
     });
 
     let classes = [];
@@ -29,16 +33,22 @@
     <meta name="robots" content="noindex" />
 </svelte:head>
 
-{#each classes as cl, index}
-    <div tabindex="0" class="collapse w-96">
-        <div class="collapse-title text-xl font-medium">{cl.name} - {cl.type}</div>
-        <div class="collapse-content">
-            <div class="flex flex-col">
-                <p>Name: {cl.name}</p>
-                <p>Description: {cl.description}</p>
-                <p>Requirements: {cl.requirements}</p>
-                <p>Type: {cl.type}</p>
+<div class="card mt-4 mx-4 p-2 rounded-lg shadow-xl border">
+    <h1 class="card-title mx-4 mt-2">Subjects</h1>
+    {#each classes as cl, index}
+        <div tabindex="0" class="collapse w-96 rounded-lg">
+            <div class="collapse-title text-xl font-medium">
+                <h1 class="inline-block">{cl.name}</h1>
+                <small class="inline-block lowercase text-sm">({cl.type})</small>
+            </div>
+            <div class="collapse-content">
+                <div class="flex flex-col">
+                    <p>Name: {cl.name}</p>
+                    <p>Description: {cl.description}</p>
+                    <p>Requirements: {cl.requirements}</p>
+                    <p>Type: {cl.type}</p>
+                </div>
             </div>
         </div>
-    </div>
-{/each}
+    {/each}
+</div>

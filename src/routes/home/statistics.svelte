@@ -10,10 +10,15 @@
             goto('/home');
             return;
         }
-        const res_subjects = await callBackend('/subject/get-all', 'GET');
-        res_subjects.forEach(cls => {
-            subjects = [...subjects, { ...cls }];
-        });
+
+        try {
+            const res_subjects = await callBackend('/subject/get-all', 'GET');
+            res_subjects.forEach(cls => {
+                subjects = [...subjects, { ...cls }];
+            });
+        } catch (err) {
+            console.error(err);
+        }
     });
 
     let subjects = [];
