@@ -3,7 +3,7 @@
     import { callBackend, roleFromEnum } from '$lib/backend';
     import { goto } from '$app/navigation';
     import { role } from '$stores/authentication';
-    import { onMount } from 'svelte';
+    import { onDestroy, onMount } from 'svelte';
 
     function makeid(length) {
         var result = '';
@@ -29,6 +29,12 @@
             });
         } catch (err) {
             console.error(err);
+        }
+    });
+
+    onDestroy(async () => {
+        if (meetingStarted) {
+            await stopMeeting();
         }
     });
 

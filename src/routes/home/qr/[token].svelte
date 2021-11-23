@@ -29,6 +29,7 @@
         try {
             const res = await callBackend(`/headcount/get/${$page.params.token}`, 'GET');
             verification = res;
+            verification.meeting.startTime = new Date(verification.meeting.startTime);
             console.log(verification);
         } catch (err) {
             console.error(err);
@@ -55,6 +56,7 @@
             <h1 class="my-4 text-4xl font-bold card-title text-success">QR was validated</h1>
             {#if verification}
                 <h2 class="card-title">Subject: {verification.meeting.subject.name}</h2>
+                <h2>Meeting started at {verification.meeting.startTime.toLocaleTimeString()}</h2>
             {/if}
         </div>
     </div>
