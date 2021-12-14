@@ -1,15 +1,5 @@
 # QResent Frontend
 
-The frontend server for the QResent webpage.
-
-## Table of contents
-
--   [QResent Frontend](#qresent-frontend)
-    -   [Table of contents](#table-of-contents)
-    -   [Notes](#notes)
-
-## Notes
-
--   navbar and footer are not components, will be defined directly in the layout (may not be need)
+The frontend server for the QResent webpage. For more information, see the [wiki](https://github.com/gramanicu/QResent-FE/wiki)
 
 © 2021 Grama Nicolae, Ionita Radu, Mosessohn Vlad, Draghici Rares, Luca Vlad
